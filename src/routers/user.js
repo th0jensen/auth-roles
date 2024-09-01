@@ -1,10 +1,11 @@
-const express = require("express");
-const {
-  createUser
-} = require('../controllers/user');
+const express = require('express')
+const { createUser, deleteUser, getUsers } = require('../controllers/user')
+const { checkRoleUser } = require('../utils/authenticate')
 
-const router = express.Router();
+const router = express.Router()
 
-router.post("/", createUser);
+router.post('/', createUser)
+router.get('/', checkRoleUser('ADMIN'), getUsers)
+router.delete('/:id', checkRoleUser('ADMIN'), deleteUser)
 
-module.exports = router;
+module.exports = router

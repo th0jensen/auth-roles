@@ -2,31 +2,37 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
 }
 
 // https://www.prisma.io/docs/concepts/components/prisma-schema/data-model
 model User {
-  id            Int       @id @default(autoincrement())
-  username      String    @unique
-  passwordHash  String
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+    id           Int      @id @default(autoincrement())
+    username     String   @unique
+    passwordHash String
+    createdAt    DateTime @default(now())
+    updatedAt    DateTime @updatedAt
+    role         Role     @default(USER)
 
-  posts         Post[]
+    posts Post[]
 }
 
 model Post {
-  id          Int       @id @default(autoincrement())
-  title       String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+    id        Int      @id @default(autoincrement())
+    title     String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
-  userId      Int
-  user        User      @relation(fields: [userId], references: [id])
+    userId Int
+    user   User @relation(fields: [userId], references: [id])
+}
+
+enum Role {
+    USER
+    ADMIN
 }
